@@ -1,7 +1,7 @@
 const $submit = document.getElementById("submit")
 const $email = document.getElementById("email")
-const $contraseña = document.getElementById("contraseña")
-const $repetircontraseña = document.getElementById("repetircontraseña")
+const $contraseña = document.getElementById("psw")
+const $repetircontraseña = document.getElementById("psw-repeat")
 
 function validateInputs(){
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
