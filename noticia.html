@@ -83,7 +83,7 @@
         </div>
     </header>
 
-    <form action="noticia.html" method="post" class="container sessionCont">
+    <form novalidate id="miFormulario" action="noticia.html" method="post" name="Formulario" onsubmit="return validación()" class="container sessionCont">
         <div class="container formCont noticiaCont">
             <h1>¡CREA TU NOTICIA!</h1>
             <p>Completá todos los campos</p>
@@ -109,7 +109,7 @@
             <label for="imagen">Subir Imagen:</label>
             <input type="file" id="imagen" name="imagen" accept="image/*" required>
 
-            <input type="submit" id="sumbit" value="Enviar">
+            <input type="submit" value="Enviar">
         </div>
     </form>
 </body>
