@@ -43,7 +43,7 @@
         </div>
     </header>
 
-    <form action="login.html" method="post" class="container sessionCont">
+    <form novalidate action="login.html" onsubmit= "return validateInputs()" method="post" class="container sessionCont">
         <div class="container formCont">
             <h1>INICIAR SESIÓN</h1>
             <p>Completá los datos de tu cuenta</p>
@@ -53,9 +53,9 @@
             <label for="psw"><b>Contraseña</b></label>
             <input type="password" placeholder="Agregar contraseña" name="psw" id="contraseña" required>
 
-            <button type="submit">INICIAR SESIÓN</button>
+            <button type="submit" id="submit">Iniciar sesión</button>
             <label>
-                <input type="checkbox" checked="checked" name="remember"> Recordarme
+                <input type="checkbox" checked="checked" name="remember" id="remember"/> Recordarme
             </label>
         </div>
     </form>
