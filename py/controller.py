@@ -120,7 +120,8 @@ def noticia(param):
                 "id_noticia": int(noticia_id),
                 "fecha_hora": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "contenido": texto,
-                "id_estado": 1
+                # 2 = no publicado (igual que para las noticias nuevas)
+                "id_estado": 2
             }
             insertarComentario(dic)
         return redirect(f"/noticia?id={noticia_id}")
@@ -183,7 +184,6 @@ def borrarComentario(request):
         except:
             pass
 
-    # Volver a la noticia de origen si tenemos el id
     if noticia_id:
         return redirect(f"/noticia?id={noticia_id}")
     return redirect('/')
@@ -204,7 +204,6 @@ def borrarNoticia(request):
         except:
             pass
 
-    # Después de borrar, volvemos a la home o a la lista de noticias admin
     return redirect('/')
 
 def mostrarFormularioNuevaNoticia():
@@ -232,18 +231,18 @@ def subirNoticiaAlSistema(dicDatos, request):
     mirequest = {}
     getRequest(mirequest)
     
-    # Subida de imagen
-    files_info = {}
+    # En lugar de subir físicamente el archivo, usamos solo el nombre
+    # y asumimos que la imagen ya existe en static/Imagenes.
     img_path = None
     try:
-        upload_file(files_info)
-        if "imagen" in files_info and not files_info["imagen"].get("file_error", False):
-            img_path = "uploads/" + files_info["imagen"]["file_name_new"]
+        file = request.files.get("imagen")
+        if file and file.filename:
+            filename = os.path.basename(file.filename)
+            # Guardamos la ruta relativa dentro de static
+            img_path = "Imagenes/" + filename
     except Exception:
-        # Si hay error al subir la imagen, seguimos sin bloquear el alta de la noticia
         img_path = None
 
-    # Construir diccionario para insertar en la tabla noticias
     dicDatos = {}
     dicDatos["id_usuario"] = session.get("id_usuario")
     dicDatos["id_categoria"] = int(mirequest.get("id_categoria")) if mirequest.get("id_categoria") else None
@@ -252,7 +251,7 @@ def subirNoticiaAlSistema(dicDatos, request):
     dicDatos["subtitulo"] = mirequest.get("subtitulo")
     dicDatos["cuerpo"] = mirequest.get("cuerpo")
     dicDatos["img"] = img_path
-    dicDatos["id_estado"] = 2  # 2 = pendiente de aprobación
+    dicDatos["id_estado"] = 2
 
     res = insertarNoticias(dicDatos)
 
@@ -434,15 +433,22 @@ def procesarCambioEstadoNoticia(request):
     if noticia_id and nuevo_estado:
         if nuevo_estado == "publicado":
             estado_num = 1
-        elif nuevo_estado == "no-publicado":
+            if actualizarEstadoNoticia(noticia_id, estado_num):
+                return redirect('/noticiasAdm?success=1')
+            else:
+                return redirect('/noticiasAdm?error=1')
+        elif nuevo_estado == "rechazado":
+            try:
+                borrarNoticiaPorId(int(noticia_id))
+                return redirect('/noticiasAdm?success=1')
+            except:
+                return redirect('/noticiasAdm?error=1')
+        else:
             estado_num = 2
-        else:
-            estado_num = 3
-            
-        if actualizarEstadoNoticia(noticia_id, estado_num):
-            return redirect('/noticiasAdm?success=1')
-        else:
-            return redirect('/noticiasAdm?error=1')
+            if actualizarEstadoNoticia(noticia_id, estado_num):
+                return redirect('/noticiasAdm?success=1')
+            else:
+                return redirect('/noticiasAdm?error=1')
     
     return redirect('/noticiasAdm')
 

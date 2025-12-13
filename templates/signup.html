@@ -12,24 +12,12 @@
     <div class="headerNewsCont">
         <a href="/" class="active category">INICIO</a>
         <div class="webHeader">
-            {% if categoria %}
-                {% for x in categoria %}
-                    {% set cid = x[0] %}
-                    {% if cid == 1 %}
-                        <a class="category" href="/policiales">{{ x[1] }}</a>
-                    {% elif cid == 2 %}
-                        <a class="category" href="/economia">{{ x[1] }}</a>
-                    {% elif cid == 3 %}
-                        <a class="category" href="/sociedad">{{ x[1] }}</a>
-                    {% elif cid == 4 %}
-                        <a class="category" href="/tecnologia">{{ x[1] }}</a>
-                    {% elif cid == 5 %}
-                        <a class="category" href="/politica">{{ x[1] }}</a>
-                    {% elif cid == 6 %}
-                        <a class="category" href="/deportes">{{ x[1] }}</a>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
+            <a class="category" href="/deportes">Deportes</a>
+            <a class="category" href="/economia">Economía</a>
+            <a class="category" href="/politica">Política</a>
+            <a class="category" href="/sociedad">Sociedad</a>
+            <a class="category" href="/policiales">Policiales</a>
+            <a class="category" href="/tecnologia">Tecnología</a>
         </div>
         <div class="dropdownHeader">
             <div class="dropdownTitle">
@@ -55,7 +43,7 @@
                 <a href="/comentariosAdm">COMENTARIOS</a>
                 <a href="/logout">CERRAR SESIÓN</a>
             {% else %}
-                <a href="/nuevanoticia">¡CREA TU NOTICIA!</a>
+                <a href="/nueva_noticia">¡CREA TU NOTICIA!</a>
                 <a href="/logout">CERRAR SESIÓN</a>
             {% endif %}
         {% else %}
@@ -66,25 +54,31 @@
 
     <form action="/signup" method="post" class="container sessionCont" data-form="signup">
       <div class="container formCont">
-        <h1>REGISTRATE</h1>
-        <p>Completá los siguientes datos para crear tu cuenta</p>
+    <h1>REGISTRATE</h1>
+    <p style="margin-bottom: 16px;">Completá los siguientes datos para crear tu cuenta</p>
                 <label for="name"><b>Nombre</b></label>
                 <input type="text" placeholder="Agregar nombre" name="name" id="name" required>
+                <span class="error-msg" id="error-name"></span>
 
                 <label for="surname"><b>Apellido</b></label>
                 <input type="text" placeholder="Agregar apellido" name="surname" id="surname" required>
+                <span class="error-msg" id="error-surname"></span>
 
                 <label for="userid"><b>Usuario</b></label>
                 <input type="text" placeholder="Agregar usuario" name="userid" id="userid" required>
+                <span class="error-msg" id="error-userid"></span>
     
                 <label for="usermail"><b>Email</b></label>
                 <input type="text" placeholder="Agregar email" name="usermail" id="usermail" required>
+                <span class="error-msg" id="error-usermail"></span>
     
                 <label for="userpassword"><b>Contraseña</b></label>
                 <input type="password" placeholder="Agregar contraseña" name="userpassword" id="userpassword" required>
+                <span class="error-msg" id="error-userpassword"></span>
     
-        <label for="psw-repeat"><b>Repetir contraseña</b></label>
-        <input type="password" placeholder="Repetir contraseña" name="psw-repeat" id="psw-repeat" required>
+    <label for="psw-repeat"><b>Repetir contraseña</b></label>
+    <input type="password" placeholder="Repetir contraseña" name="psw-repeat" id="psw-repeat" required>
+    <span class="error-msg" id="error-psw-repeat"></span>
 
         <button type="submit" id="submit" class="registerbtn">Registrarse</button>
       </div>
@@ -92,5 +86,7 @@
         <div class="container2" style="background-color:#f1f1f1">
             <span class="log">¿Ya tenés una cuenta? <a href="/login">Inicia sesión</a></span>
         </div>
+
+    <script src="../static/scripts.js"></script>
 </body>
 </html>

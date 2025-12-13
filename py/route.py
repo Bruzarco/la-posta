@@ -68,6 +68,10 @@ def Route(aplicacion=Flask):
     def borrar_noticia_route():
         return borrarNoticia(request)
     
+    @aplicacion.route("/borrar_comentario", methods=["POST"])
+    def borrar_comentario_route():
+        return borrarComentario(request)
+    
 
 
     @aplicacion.route("/")    

@@ -184,6 +184,7 @@ def obtenerComentariosParaAdmin(param):
         FROM comentario c
         INNER JOIN usuario u ON c.id_usuario = u.id
         INNER JOIN noticias n ON c.id_noticia = n.id
+        WHERE c.id_estado = 2
         ORDER BY c.id_noticia, c.fecha_hora DESC
     """
     comentarios = selectDB(BASE, sSql)

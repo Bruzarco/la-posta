@@ -81,88 +81,133 @@ document.addEventListener('DOMContentLoaded', () => {
         const passwordInput = document.getElementById('userpassword');
         const passwordRepeatInput = document.getElementById('psw-repeat');
 
-        if (submitBtn && nombreInput && apellidoInput && usuarioInput && emailInput && passwordInput && passwordRepeatInput) {
-            submitBtn.addEventListener('click', (event) => {
-                event.preventDefault();
+        const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚüÜ]{2,24}$/;
+        const apellidoRegex = /^[a-zA-ZáéíóúÁÉÍÓÚüÜ]{2,32}$/;
+        const usuarioRegex = /^[a-zA-Z0-9]{4,16}$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const contraseñaRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$/;
 
-                const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚüÜ]{2,24}$/;
-                const apellidoRegex = /^[a-zA-ZáéíóúÁÉÍÓÚüÜ]{2,32}$/;
-                const usuarioRegex = /^[a-zA-Z0-9]{4,16}$/;
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                const contraseñaRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+        const errorNombre = document.getElementById('error-name');
+        const errorApellido = document.getElementById('error-surname');
+        const errorUsuario = document.getElementById('error-userid');
+        const errorEmail = document.getElementById('error-usermail');
+        const errorPassword = document.getElementById('error-userpassword');
+        const errorPasswordRepeat = document.getElementById('error-psw-repeat');
 
-                // reset bordes
-                nombreInput.style.border = '';
-                apellidoInput.style.border = '';
-                usuarioInput.style.border = '';
-                emailInput.style.border = '';
-                passwordInput.style.border = '';
-                passwordRepeatInput.style.border = '';
+        const marcarError = (input, errorSpan, mensaje) => {
+            if (errorSpan) {
+                errorSpan.textContent = mensaje;
+            }
+            input.style.border = '1px solid red';
+        };
 
-                if (nombreInput.value === '') {
-                    alert('El campo de nombre se encuentra vacío');
-                    nombreInput.style.border = '1px solid red';
-                    return;
-                }
-                if (apellidoInput.value === '') {
-                    alert('El campo de apellido se encuentra vacío');
-                    apellidoInput.style.border = '1px solid red';
-                    return;
-                }
-                if (usuarioInput.value === '') {
-                    alert('El campo de usuario se encuentra vacío');
-                    usuarioInput.style.border = '1px solid red';
-                    return;
-                }
-                if (emailInput.value === '') {
-                    alert('El campo de email se encuentra vacío');
-                    emailInput.style.border = '1px solid red';
-                    return;
-                }
-                if (passwordInput.value === '') {
-                    alert('El campo de contraseña se encuentra vacío');
-                    passwordInput.style.border = '1px solid red';
-                    return;
-                }
-                if (passwordRepeatInput.value === '') {
-                    alert('El campo de repetir contraseña se encuentra vacío');
-                    passwordRepeatInput.style.border = '1px solid red';
-                    return;
-                }
+        const limpiarError = (input, errorSpan) => {
+            input.style.border = '';
+            if (errorSpan) {
+                errorSpan.textContent = '';
+            }
+        };
 
-                if (!nombreRegex.test(nombreInput.value)) {
-                    alert('El nombre no cumple con las condiciones');
-                    nombreInput.style.border = '1px solid red';
-                    return;
-                }
-                if (!apellidoRegex.test(apellidoInput.value)) {
-                    alert('El apellido no cumple con las condiciones');
-                    apellidoInput.style.border = '1px solid red';
-                    return;
-                }
-                if (!usuarioRegex.test(usuarioInput.value)) {
-                    alert('El usuario no cumple con las condiciones');
-                    usuarioInput.style.border = '1px solid red';
-                    return;
-                }
-                if (!emailRegex.test(emailInput.value)) {
-                    alert('El email no cumple con las condiciones');
-                    emailInput.style.border = '1px solid red';
-                    return;
-                }
-                if (!contraseñaRegex.test(passwordInput.value)) {
-                    alert('La contraseña no cumple con las condiciones');
-                    passwordInput.style.border = '1px solid red';
-                    return;
-                }
-                if (passwordInput.value !== passwordRepeatInput.value) {
-                    alert('Las contraseñas no coinciden');
-                    passwordRepeatInput.style.border = '1px solid red';
-                    return;
-                }
+        const validarNombre = () => {
+            if (nombreInput.value === '') {
+                marcarError(nombreInput, errorNombre, 'El campo de nombre se encuentra vacío');
+                return false;
+            }
+            if (!nombreRegex.test(nombreInput.value)) {
+                marcarError(nombreInput, errorNombre, 'El nombre no cumple con las condiciones');
+                return false;
+            }
+            limpiarError(nombreInput, errorNombre);
+            return true;
+        };
 
-                // Si todo está ok, dejamos que el backend procese el registro
-                signupForm.submit();
+        const validarApellido = () => {
+            if (apellidoInput.value === '') {
+                marcarError(apellidoInput, errorApellido, 'El campo de apellido se encuentra vacío');
+                return false;
+            }
+            if (!apellidoRegex.test(apellidoInput.value)) {
+                marcarError(apellidoInput, errorApellido, 'El apellido no cumple con las condiciones');
+                return false;
+            }
+            limpiarError(apellidoInput, errorApellido);
+            return true;
+        };
+
+        const validarUsuario = () => {
+            if (usuarioInput.value === '') {
+                marcarError(usuarioInput, errorUsuario, 'El campo de usuario se encuentra vacío');
+                return false;
+            }
+            if (!usuarioRegex.test(usuarioInput.value)) {
+                marcarError(usuarioInput, errorUsuario, 'El usuario no cumple con las condiciones');
+                return false;
+            }
+            limpiarError(usuarioInput, errorUsuario);
+            return true;
+        };
+
+        const validarEmail = () => {
+            if (emailInput.value === '') {
+                marcarError(emailInput, errorEmail, 'El campo de email se encuentra vacío');
+                return false;
+            }
+            if (!emailRegex.test(emailInput.value)) {
+                marcarError(emailInput, errorEmail, 'El email no cumple con las condiciones');
+                return false;
+            }
+            limpiarError(emailInput, errorEmail);
+            return true;
+        };
+
+        const validarPassword = () => {
+            if (passwordInput.value === '') {
+                marcarError(passwordInput, errorPassword, 'El campo de contraseña se encuentra vacío');
+                return false;
+            }
+            if (!contraseñaRegex.test(passwordInput.value)) {
+                marcarError(passwordInput, errorPassword, 'La contraseña debe tener entre 8 y 15 caracteres, incluir mayúsculas, minúsculas y al menos un número');
+                return false;
+            }
+            limpiarError(passwordInput, errorPassword);
+            return true;
+        };
+
+        const validarPasswordRepeat = () => {
+            if (passwordRepeatInput.value === '') {
+                marcarError(passwordRepeatInput, errorPasswordRepeat, 'El campo de repetir contraseña se encuentra vacío');
+                return false;
+            }
+            if (passwordInput.value !== passwordRepeatInput.value) {
+                marcarError(passwordRepeatInput, errorPasswordRepeat, 'Las contraseñas no coinciden');
+                return false;
+            }
+            limpiarError(passwordRepeatInput, errorPasswordRepeat);
+            return true;
+        };
+
+        // Validación al salir de cada campo (on blur)
+        nombreInput.addEventListener('blur', validarNombre);
+        apellidoInput.addEventListener('blur', validarApellido);
+        usuarioInput.addEventListener('blur', validarUsuario);
+        emailInput.addEventListener('blur', validarEmail);
+        passwordInput.addEventListener('blur', validarPassword);
+        passwordRepeatInput.addEventListener('blur', validarPasswordRepeat);
+
+        if (submitBtn) {
+            submitBtn.addEventListener('click', () => {
+                const esValido =
+                    validarNombre() &&
+                    validarApellido() &&
+                    validarUsuario() &&
+                    validarEmail() &&
+                    validarPassword() &&
+                    validarPasswordRepeat();
+
+                if (!esValido) {
+                    alert('Revisá los campos marcados en rojo: falta completar o corregir datos.');
+                }
+                // El navegador hará el submit normal del formulario
             });
         }
     }
