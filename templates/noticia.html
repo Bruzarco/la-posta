@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,7 @@
                         {% elif cid == 3 %}
                             <a class="category" href="/sociedad">{{ x[1] }}</a>
                         {% elif cid == 4 %}
-                            <a class="category" href="/tecno">{{ x[1] }}</a>
+                            <a class="category" href="/tecnologia">{{ x[1] }}</a>
                         {% elif cid == 5 %}
                             <a class="category" href="/politica">{{ x[1] }}</a>
                         {% elif cid == 6 %}
@@ -41,7 +41,7 @@
                         <a class="dropdownCategory" href="/politica">Política</a>
                         <a class="dropdownCategory" href="/sociedad">Sociedad</a>
                         <a class="dropdownCategory" href="/policiales">Policiales</a>
-                        <a class="dropdownCategory" href="/tecno">Tecnología</a>
+                        <a class="dropdownCategory" href="/tecnologia">Tecnología</a>
                     </div>
                 </div>            
             </div>
@@ -56,6 +56,7 @@
                         <a href="/logout">CERRAR SESIÓN</a>
                     {% endif %}
                 {% else %}
+                    <a href="/signup">REGISTRARSE</a>
                     <a href="/login">INICIAR SESIÓN</a>
                 {% endif %}
             </div>
@@ -64,13 +65,20 @@
         <div class="container-main">
             {% if noticia %}
             <div class="articulo">
-                <h1>{{ noticia.titulo }}</h1>
-                <h2>{{ noticia.subtitulo }}</h2>
-                <h3>{{ noticia.fecha_hora }}</h3>
-                {% if noticia.img %}
-                    <img src="{{ url_for('static', filename=noticia.img) }}" alt="Imagen de la noticia">
+                <h1>{{ noticia[4] }}</h1>
+                <h2>{{ noticia[5] }}</h2>
+                <h3>{{ noticia[3] }}</h3>
+                {% if noticia[7] %}
+                    <img src="{{ url_for('static', filename=noticia[7]) }}" alt="Imagen de la noticia">
                 {% endif %}
-                <p>{{ noticia.cuerpo }}</p>
+                <p>{{ noticia[6] }}</p>
+
+                {% if es_admin %}
+                    <form action="/borrar_noticia" method="POST" onsubmit="return confirm('¿Seguro que querés borrar esta noticia? Esta acción no se puede deshacer.');">
+                        <input type="hidden" name="noticia_id" value="{{ noticia[0] }}">
+                        <button type="submit" class="btn-delete-noticia">Borrar noticia</button>
+                    </form>
+                {% endif %}
 
                 <!-- Comentarios -->
                 <section class="comentarios">
@@ -86,7 +94,7 @@
                                     {% if es_admin %}
                                         <form action="/borrar_comentario" method="POST" style="display:inline;">
                                             <input type="hidden" name="comentario_id" value="{{ c[0] }}">
-                                            <input type="hidden" name="noticia_id" value="{{ noticia.id }}">
+                                            <input type="hidden" name="noticia_id" value="{{ noticia[0] }}">
                                             <button type="submit">Borrar</button>
                                         </form>
                                     {% endif %}
@@ -98,7 +106,7 @@
                     {% endif %}
 
                     {% if usuario_logueado %}
-                        <form action="/noticia?id={{ noticia.id }}" method="POST" class="form-comentario">
+                        <form action="/noticia?id={{ noticia[0] }}" method="POST" class="form-comentario">
                             <label for="comentario">Dejá tu comentario (máx. 300 caracteres):</label><br>
                             <textarea id="comentario" name="comentario" maxlength="300" required></textarea><br>
                             <button type="submit">Enviar comentario</button>

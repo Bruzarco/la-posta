@@ -1,4 +1,4 @@
-
+-- carga las noticias en la base de datos
 USE laposta;
 
 INSERT INTO noticias
@@ -27,7 +27,6 @@ En el alargue, ambos buscaron el partido. Un gol de cualquiera de los dos, los c
 'Imagenes/deportes01.jpeg',
  1);
 
--- Deportes 02
 INSERT INTO noticias
 (id,id_usuario,id_categoria,fecha_hora,titulo,subtitulo,cuerpo,img,id_estado)
 VALUES
@@ -53,10 +52,6 @@ En este curso, Lautaro escaló con su producción en la lista de los goleadores 
 'Imagenes/deportes02.jpeg',
  1);
 
--- NOTA: faltan por agregar aquí los INSERT para economia01, economia02,
--- policial01, policial02, politica01, politica02, sociedad01, sociedad02,
--- tecno01 y tecno02 siguiendo el mismo formato.
--- Economia 01
 INSERT INTO noticias
 (id,id_usuario,id_categoria,fecha_hora,titulo,subtitulo,cuerpo,img,id_estado)
 VALUES
@@ -74,7 +69,6 @@ Las áreas se encuentran entre las más convulsionadas prácticamente desde el i
 'Imagenes/economia01.jpeg',
  1);
 
--- Economia 02
 INSERT INTO noticias
 (id,id_usuario,id_categoria,fecha_hora,titulo,subtitulo,cuerpo,img,id_estado)
 VALUES
@@ -90,7 +84,6 @@ Fue a través de sus redes sociales donde el funcionario de Javier Milei se hizo
 'Imagenes/economia02.jpeg',
  1);
 
--- Policial 01
 INSERT INTO noticias
 (id,id_usuario,id_categoria,fecha_hora,titulo,subtitulo,cuerpo,img,id_estado)
 VALUES
@@ -106,7 +99,6 @@ Fuentes policiales indicaron a Infobae que, en las últimas horas, fue capturado
 'Imagenes/policial01.jpeg',
  1);
 
--- Policial 02
 INSERT INTO noticias
 (id,id_usuario,id_categoria,fecha_hora,titulo,subtitulo,cuerpo,img,id_estado)
 VALUES
@@ -122,7 +114,6 @@ El incidente ocurrió alrededor de las 17:30 horas, cuando agentes de policía f
 'Imagenes/policial02.jpeg',
  1);
 
--- Politica 01
 INSERT INTO noticias
 (id,id_usuario,id_categoria,fecha_hora,titulo,subtitulo,cuerpo,img,id_estado)
 VALUES
@@ -138,7 +129,6 @@ El mandatario fue recibido por el intendente Walter Cortés y el ministro de gob
 'Imagenes/politica01.jpeg',
  1);
 
--- Politica 02
 INSERT INTO noticias
 (id,id_usuario,id_categoria,fecha_hora,titulo,subtitulo,cuerpo,img,id_estado)
 VALUES
@@ -154,7 +144,6 @@ VALUES
  'Imagenes/politica02.jpeg',
  1);
 
--- Sociedad 01
 INSERT INTO noticias
 (id,id_usuario,id_categoria,fecha_hora,titulo,subtitulo,cuerpo,img,id_estado)
 VALUES
@@ -170,7 +159,6 @@ El Gobierno de la ciudad anunció hoy que el Paseo del Bajo, construido para dar
 'Imagenes/sociedad01.jpeg',
  1);
 
--- Sociedad 02
 INSERT INTO noticias
 (id,id_usuario,id_categoria,fecha_hora,titulo,subtitulo,cuerpo,img,id_estado)
 VALUES
@@ -186,7 +174,6 @@ El ajuste implementado por la administración de Javier Milei, aseguran, pone en
 'Imagenes/sociedad02.jpeg',
  1);
 
--- Tecnologia 01
 INSERT INTO noticias
 (id,id_usuario,id_categoria,fecha_hora,titulo,subtitulo,cuerpo,img,id_estado)
 VALUES
@@ -200,7 +187,6 @@ VALUES
  'Imagenes/tecno01.jpeg',
  1);
 
--- Tecnologia 02
 INSERT INTO noticias
 (id,id_usuario,id_categoria,fecha_hora,titulo,subtitulo,cuerpo,img,id_estado)
 VALUES

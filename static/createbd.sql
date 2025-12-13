@@ -119,5 +119,3 @@ VALUES
 (NULL,"Conra","Clementi","conrado","conradoclementi@uca.edu.ar","1234",2),
 (NULL,"Bruno","Zarco","bruno","brunozarco@uca.edu.ar","1234",2),
 (NULL,"Ivan","Kamermann","ivan","ivankamermann@uca.edu.ar","1234",2);
-
--- Nota: la carga de noticias y comentarios se realiza desde static/laposta.sql

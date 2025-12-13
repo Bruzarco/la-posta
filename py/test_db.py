@@ -5,9 +5,9 @@ def test_connection():
     conn = None
     used_project_connector = False
 
-    # 1) Intentar usar el conector del proyecto si está disponible
+    # usar conector del proyecto si está disponible
     try:
-        from __mysql__db import BASE, conectarBD  # may raise
+        from __mysql__db import BASE, conectarBD
         try:
             conn = conectarBD(BASE)
             used_project_connector = True
@@ -15,10 +15,10 @@ def test_connection():
             print("INFO: Conector del proyecto falló, fallback a pymysql:", e)
             conn = None
     except Exception:
-        # módulo no disponible, usar fallback
+        # fallback
         conn = None
 
-    # 2) Fallback: usar pymysql con configuración XAMPP por defecto
+    # fallback pymysql
     if conn is None:
         try:
             import pymysql
@@ -44,7 +44,7 @@ def test_connection():
             print("Asegúrate de que MySQL (XAMPP) esté arrancado y que las credenciales sean correctas.")
             sys.exit(1)
 
-    # 3) Ejecutar comprobaciones básicas
+    # comprobaciones básicas
     try:
         cur = conn.cursor()
 

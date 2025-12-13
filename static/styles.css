@@ -10,11 +10,12 @@ body {
 }
 
 .topnav {
-    overflow: hidden;
+    overflow: visible;
     background-color: #0E46A3;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0 40px;
 }
 
 .topnav .category {
@@ -31,6 +32,7 @@ body {
     background-color: #0E46A3;
     color: white;
 }
+
 
 .topnav .icon {
     display: none;
@@ -51,38 +53,7 @@ body {
     display: block;
 }
 
-@media screen and (max-width: 600px) {
-
-    .topnav a:not(:first-child),
-    .dropdown .dropbtn {
-        display: none;
-    }
-
-    .topnav a.icon {
-        float: right;
-        display: block;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .topnav.responsive {
-        position: relative;
-    }
-
-    .topnav.responsive .icon {
-        position: absolute;
-        right: 0;
-        top: 0;
-    }
-
-    .topnav.responsive a {
-        float: none;
-        display: block;
-        text-align: left;
-    }
-}
-
-/*todo lo de arriba es del top nav*/
+/* nav */
 
 input[type=text], input[type=password] {
     width: 100%;
@@ -111,7 +82,7 @@ button:hover {
 .cancelbtn {
     width: auto;
     padding: 10px 20px;
-    background-color: red; 
+    background-color: red;
 }
 
 .cancelbtn:hover {
@@ -247,6 +218,14 @@ span.psw {
     border: 1px solid #0E46A3;
 }
 
+/* Botón principal para enviar formularios grandes (como crear noticia) */
+.formSubmit {
+    font-size: 18px;
+    font-weight: 600;
+    padding: 14px 24px;
+    margin-top: 10px;
+}
+
 .headerNewsCont {
     display: flex;
 }
@@ -258,8 +237,8 @@ span.psw {
 .headerUserCont {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    width: 30%;
+    justify-content: flex-end;
+    gap: 8px;
 }
 
 .headerUserCont a {
@@ -271,18 +250,22 @@ span.psw {
     margin: 1%;
     text-align: center;
     font-size: 15px;
+    white-space: nowrap;
 }
 
+/* Dropdown de categorías */
 .dropdownCont {
     position: absolute;
-    top: 5%;
+    top: 100%;
+    left: 0;
     display: none;
     flex-direction: column;
-    align-items: center !important; 
-    padding: 2%;
+    align-items: flex-start;
+    padding: 8px 16px;
     background-color: #E1F7F5;
     border-radius: 5px;
-    
+    min-width: max-content;
+    z-index: 99999;
 }
 
 .dropdownCategory {
@@ -318,17 +301,19 @@ span.psw {
     height: auto;
 }
 
+.dropdownHeader {
+    position: relative; /* para que el dropdown se posicione respecto al botón Categorías */
+    }
+
+    .dropdownHeader:hover > .dropdownCont {
+        display: flex;
+    }
+
+    @media(max-width:1040px) {
+    }
+
 
 @media(max-width:1040px) {
-    .webHeader {
-        display: none;
-    }
-    .dropwdownHeader {
-        display: flex;
-    }
-    .dropdownTitle {
-        display: flex;
-    }
 }
 
 main {
@@ -336,17 +321,14 @@ main {
 }
 
 .sidebar {
-    grid-area: SIDE;
     background-color: #00000042;
     padding: 4%;
-    max-width: 25%;
-    margin-left: auto;
 }
 .sidebar li, .sidebar a {
     list-style-type: none;
     text-decoration: none;
     font-size: 1.2em;
-    margin-bottom: 10%;
+    margin-bottom: 14%;
     color: black;
 }
 .sidebar ul {
@@ -372,7 +354,7 @@ main {
         align-items: flex-start;
     }
  }
- 
+
 
 .sbTitle {
     padding: 0;
@@ -395,12 +377,11 @@ main {
 
 .slide {
     height: 100%;
-    width: 100%;
     background-size: cover;
 }
 
 .slide1 {
-    background-image: url(Noticias/Sociedad/sociedad03.jpeg);   
+    background-image: url(Noticias/Sociedad/sociedad03.jpeg);
 }
 
 .slide2 {
@@ -408,19 +389,19 @@ main {
 }
 
 .slide3 {
-    background-image: url(Noticias/Economía/economia03.jpeg);   
+    background-image: url(Noticias/Economía/economia03.jpeg);
 }
 
 .slide4 {
-    background-image: url(Noticias/Deportes/deportes04.jpeg);   
+    background-image: url(Noticias/Deportes/deportes04.jpeg);
 }
 
 .slide5 {
-    background-image: url(Noticias/Tecnología/tecno04.jpeg);   
+    background-image: url(Noticias/Tecnología/tecno04.jpeg);
 }
 
 .slide6 {
-    background-image: url(Noticias/Politica/politica05.jpeg);   
+    background-image: url(Noticias/Politica/politica05.jpeg);
 }
 
 .slideCont2 {
@@ -430,20 +411,22 @@ main {
 }
 
 .container-main {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .noticias {
-    flex: 2;
-    padding: 5px;
-    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 noticias por fila en desktop */
+    gap: 20px;
 }
 
 .noticia {
     border: 1px;
     padding: 10px;
-    margin-bottom: 0px;
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -456,6 +439,11 @@ main {
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
+.noticia-link {
+    text-decoration: none;
+    color: inherit;
+}
+
 .noticia h2 {
     margin-top: 3px;
     margin-bottom: 3px;
@@ -466,7 +454,7 @@ main {
     max-width: 600;
     height: 400;
     object-fit: cover;
-    border-radius: 10px;  
+    border-radius: 10px;
 }
 
 
@@ -532,6 +520,15 @@ main {
     margin: 0 0 10px;
 }
 
+.com-noticia-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.com-noticia-link:hover {
+    color: #0E46A3;
+}
+
 .comStatBox {
     display: flex;
     justify-content: flex-end;
@@ -587,6 +584,41 @@ textarea {
     border: 1px solid red;
 }
 
+.btn-delete-noticia {
+    margin-top: 10px;
+    background-color: #c0392b;
+    color: #fff;
+    border-radius: 6px;
+}
+
+.btn-delete-noticia:hover {
+    background-color: #e74c3c;
+}
+
+/* --- MOBILE HEADER BEHAVIOR --- */
+@media screen and (max-width: 600px) {
+    /* Mantener header en una sola fila en móviles, con algo menos de padding */
+    .topnav {
+        flex-wrap: nowrap;
+        padding: 0 16px;
+    }
+
+    /* El bloque de noticias ocupa el espacio flexible */
+    .headerNewsCont {
+        flex: 1;
+    }
+
+    /* Evitar que el bloque de usuario se contraiga demasiado */
+    .headerUserCont {
+        flex-shrink: 0;
+    }
+
+    /* Mostrar solo el botón de INICIAR SESIÓN */
+    .headerUserCont a:nth-child(1) {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 600px) {
     .noticia img {
         max-width: 100%;
@@ -600,6 +632,14 @@ textarea {
 }
 
 @media screen and (max-width: 600px) {
+    .articulo h1 {
+        font-size: 24px;
+    }
+
+    .articulo h2 {
+        font-size: 16px;
+    }
+
     .noticia {
         width: 90%;
     }
@@ -611,5 +651,41 @@ textarea {
 
     .noticia img {
         height: 150px;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .sidebar li, .sidebar a {
+        font-size: 1rem;
+        margin-bottom: 8%;
+    }
+}
+
+@media (max-width: 768px) {
+    .container-main {
+        grid-template-columns: 3fr 1fr;
+    }
+
+    .sidebar {
+        max-width: 260px;
+        width: 100%;
+        margin-left: auto;
+    }
+
+    .noticias {
+        grid-template-columns: 1fr; /* una noticia por fila */
+    }
+}
+
+@media(max-width:1040px) {
+    .webHeader {
+        display: none;
+    }
+    .dropwdownHeader {
+        display: flex;
+    }
+    .dropdownTitle {
+        display: flex;
     }
 }

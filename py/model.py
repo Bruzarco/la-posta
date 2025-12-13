@@ -1,19 +1,9 @@
-from __mysql__db import * #importo las funciones que acceden a la base de datos
-from flask import request, session, redirect, render_template #importo session para el manejo de sesion
+from __mysql__db import *
+from flask import request, session, redirect, render_template
 
 
 #para obtener los datos del usuario/administrador que inicio sesion
 def obtenerUsuarioXEmailPass(result,email,password):
-    '''### Información:
-       Obtiene todos los campos de la tabla usuario a partir de la clave 'email' y del 'password'.
-       Carga la información obtenida de la BD en el dict 'result'
-       Recibe 'result' in diccionario donde se almacena la respuesta de la consulta
-       Recibe 'email' que es el mail si se utiliza como clave en la búsqueda
-       Recibe 'password' que se utiliza en la consulta. (Para validadar al usuario)
-       Retorna:
-        True cuando se obtiene un registro de u usuario a partir del 'email' y el 'pass.
-        False caso contrario.
-    '''
     res=False
     sSql="""SELECT u.id, u.nombre, u.apellido, u.usuario, u.email, u.pass, u.id_tipo_usuario, t.tipo
     FROM usuario u 
@@ -36,21 +26,33 @@ def obtenerUsuarioXEmailPass(result,email,password):
 
 #para insertar en la tabla 'usuario' un nuevo registro
 def insertarRegistro(dicDatos):
-  sQuery=""" 
-    INSERT INTO usuario
-    (id,nombre,apellido,usuario,email,pass)
-    VALUES
-    (%s,%s, %s, %s, %s,%s);
-  """
+    """Inserta un nuevo usuario con tipo por defecto 1 (usuario común)."""
 
-  val=(None,dicDatos.get("nombre"),dicDatos.get("apellido"), dicDatos.get("usuario"), dicDatos.get("email"), dicDatos.get("pass"))
+    sQuery = """ 
+        INSERT INTO usuario
+        (id, nombre, apellido, usuario, email, pass, id_tipo_usuario)
+        VALUES
+        (%s, %s, %s, %s, %s, %s, %s);
+    """
 
-  # verifica si el usuario ya existe
-  try:
-        resul_insert = insertDB(BASE, sQuery, val)
-  except:
-        resul_insert=0
-  return resul_insert
+    # 1 = usuario común, 2 = admin (según tu tabla tipo_usuario)
+    TIPO_USUARIO_COMUN = 1
+
+    val = (
+        None,
+        dicDatos.get("nombre"),
+        dicDatos.get("apellido"),
+        dicDatos.get("usuario"),
+        dicDatos.get("email"),
+        dicDatos.get("pass"),
+        TIPO_USUARIO_COMUN,
+    )
+
+    try:
+                resul_insert = insertDB(BASE, sQuery, val)
+    except:
+                resul_insert = 0
+    return resul_insert
 
 
 #para insertar en la tabla 'noticias' un nuevo evento
@@ -70,13 +72,6 @@ def insertarNoticias(dicDatos):
 
 #para obtener las noticias publicadas (id_estado=1) para mostrar en administración
 def obtenerNoticiasPorID(param):
-    '''### Información:
-       Obtiene todas las noticias que tienen id_estado = 1 (publicadas)
-       junto con información de la categoría y el usuario autor.
-       Carga la información obtenida de la BD en el dict 'param' bajo la clave 'noticias'
-       Recibe 'param' un diccionario donde se almacena la respuesta de la consulta
-       Retorna: La función modifica directamente el parámetro 'param' agregando la lista de noticias
-    '''
     sSql = """
         SELECT n.*, c.nombre as categoria_nombre, u.nombre as autor_nombre 
         FROM noticias n 
@@ -92,16 +87,8 @@ def obtenerNoticiasPorID(param):
 
 #para obtener los datos de una noticia específica
 def obtenerDatosDeLasNoticias(request, param):
-    '''### Información:
-       Obtiene los datos de una noticia específica basándose en el ID recibido por request
-       Carga la información obtenida de la BD en el dict 'param' bajo la clave 'noticia'
-       Recibe 'request' la solicitud HTTP que contiene el ID de la noticia
-       Recibe 'param' un diccionario donde se almacena la respuesta de la consulta
-       Retorna: La función modifica directamente el parámetro 'param' agregando los datos de la noticia
-    '''
     from flask import request as flask_request
     
-    # Obtener el ID de la noticia desde los parámetros de la URL
     noticia_id = flask_request.args.get('id')
     
     if noticia_id:
@@ -120,25 +107,12 @@ def obtenerDatosDeLasNoticias(request, param):
 
 
 def obtenerCategorias(param):
-    '''### Información:
-       Obtiene todas las categorías disponibles de la base de datos
-       Carga la información obtenida de la BD en el dict 'param' bajo la clave 'categorias'
-       Recibe 'param' un diccionario donde se almacena la respuesta de la consulta
-       Retorna: La función modifica directamente el parámetro 'param' agregando la lista de categorías
-    '''
     sSql = "SELECT id, nombre FROM categoria ORDER BY id"
     categorias = selectDB(BASE, sSql)
     param['categorias'] = categorias if categorias else []
 
 
 def obtenerNoticiasPendientes(param):
-    '''### Información:
-       Obtiene todas las noticias que tienen id_estado = 2 (pendientes de aprobación)
-       junto con información de la categoría y el usuario autor.
-       Carga la información obtenida de la BD en el dict 'param' bajo la clave 'noticias_pendientes'
-       Recibe 'param' un diccionario donde se almacena la respuesta de la consulta
-       Retorna: La función modifica directamente el parámetro 'param' agregando la lista de noticias pendientes
-    '''
     sSql = """
         SELECT n.*, c.nombre as categoria_nombre, u.nombre as autor_nombre 
         FROM noticias n 
@@ -153,12 +127,6 @@ def obtenerNoticiasPendientes(param):
 
 
 def actualizarEstadoNoticia(noticia_id, nuevo_estado):
-    '''### Información:
-       Actualiza el estado de una noticia específica
-       Recibe 'noticia_id' el ID de la noticia a actualizar
-       Recibe 'nuevo_estado' el nuevo estado (1=publicado, 2=pendiente, 3=rechazado)
-       Retorna: True si se actualizó correctamente, False caso contrario
-    '''
     try:
         sSql = "UPDATE noticias SET id_estado = %s WHERE id = %s"
         updateDB(BASE, sSql, (nuevo_estado, noticia_id))
@@ -189,24 +157,54 @@ def insertarComentario(dicDatos):
 
 # obtener comentarios publicados de una noticia
 def obtenerComentariosPorNoticia(noticia_id, param):
-        '''Obtiene comentarios PUBLICADOS (id_estado = 1) para una noticia dada.'''
-        sSql = """
-                SELECT c.id, c.contenido, c.fecha_hora, u.usuario
-                FROM comentario c
-                INNER JOIN usuario u ON c.id_usuario = u.id
-                WHERE c.id_noticia = %s AND c.id_estado = 1
-                ORDER BY c.fecha_hora DESC
-        """
-        comentarios = selectDB(BASE, sSql, (noticia_id,))
-        param['comentarios'] = comentarios if comentarios else []
+    sSql = """
+        SELECT c.id, c.contenido, c.fecha_hora, u.usuario
+        FROM comentario c
+        INNER JOIN usuario u ON c.id_usuario = u.id
+        WHERE c.id_noticia = %s AND c.id_estado = 1
+        ORDER BY c.fecha_hora DESC
+    """
+    comentarios = selectDB(BASE, sSql, (noticia_id,))
+    param['comentarios'] = comentarios if comentarios else []
 
 
 # borrar (eliminar físicamente) un comentario por id
 def borrarComentarioPorId(comentario_id):
-        try:
-                sSql = "DELETE FROM comentario WHERE id = %s"
-                updateDB(BASE, sSql, (comentario_id,))
-                return True
-        except:
-                return False
+    try:
+        sSql = "DELETE FROM comentario WHERE id = %s"
+        updateDB(BASE, sSql, (comentario_id,))
+        return True
+    except:
+        return False
+
+
+def obtenerComentariosParaAdmin(param):
+    sSql = """
+        SELECT c.id, c.id_noticia, n.titulo, c.contenido, c.fecha_hora, u.usuario, c.id_estado
+        FROM comentario c
+        INNER JOIN usuario u ON c.id_usuario = u.id
+        INNER JOIN noticias n ON c.id_noticia = n.id
+        ORDER BY c.id_noticia, c.fecha_hora DESC
+    """
+    comentarios = selectDB(BASE, sSql)
+    param['comentarios_admin'] = comentarios if comentarios else []
+
+
+def actualizarEstadoComentario(comentario_id, nuevo_estado):
+    try:
+        sSql = "UPDATE comentario SET id_estado = %s WHERE id = %s"
+        updateDB(BASE, sSql, (nuevo_estado, comentario_id))
+        return True
+    except:
+        return False
+
+
+# borrar (eliminar físicamente) una noticia por id
+def borrarNoticiaPorId(noticia_id):
+    try:
+        sSql = "DELETE FROM noticias WHERE id = %s"
+        updateDB(BASE, sSql, (noticia_id,))
+        return True
+    except:
+        return False
 

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
-    <title>La Posta - Administración de Noticias</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <title>Administracion de Noticias</title>
 </head>
 <body>
     <header class="topnav" id="myTopnav">
@@ -16,7 +16,7 @@
                 <a class="category" href="/politica">Política</a>
                 <a class="category" href="/sociedad">Sociedad</a>
                 <a class="category" href="/policiales">Policiales</a>
-                <a class="category" href="/tecno">Tecnología</a>
+                <a class="category" href="/tecnologia">Tecnología</a>
             </div>
             <div class="dropdownHeader">
                 <div class="dropdownTitle">
@@ -31,20 +31,30 @@
                     <a class="dropdownCategory" href="/politica">Política</a>
                     <a class="dropdownCategory" href="/sociedad">Sociedad</a>
                     <a class="dropdownCategory" href="/policiales">Policiales</a>
-                    <a class="dropdownCategory" href="/tecno">Tecnología</a>
+                    <a class="dropdownCategory" href="/tecnologia">Tecnología</a>
                 </div>
             </div>            
         </div>
         <div class="headerUserCont">
-            <a href="/noticiasAdm">NOTICIAS</a>
-            <a href="/comentariosAdm">COMENTARIOS</a>
-            <a href="/logout">CERRAR SESIÓN</a>
+            {% if usuario_logueado %}
+                {% if es_admin %}
+                    <a href="/noticiasAdm">NOTICIAS</a>
+                    <a href="/comentariosAdm">COMENTARIOS</a>
+                    <a href="/logout">CERRAR SESIÓN</a>
+                {% else %}
+                    <a href="/nueva_noticia">¡CREA TU NOTICIA!</a>
+                    <a href="/logout">CERRAR SESIÓN</a>
+                {% endif %}
+            {% else %}
+                <a href="/signup">REGISTRARSE</a>
+                <a href="/login">INICIAR SESIÓN</a>
+            {% endif %}
         </div>
     </header>
     
     <main class="admin-main">
         <section class="notiAdm-container">
-            <h2>ADMINISTRADOR DE NOTICIAS - NOTICIAS PENDIENTES</h2>
+            <h2>ADMINISTRADOR DE NOTICIAS</h2>
             <div id="notiAdm">
                 {% if noticias_pendientes %}
                     {% for noticia in noticias_pendientes %}

@@ -16,7 +16,7 @@ def main():
 
     flask.run("0.0.0.0",5000,debug = True) #Método que inicia la app con la dirección, puertos y modo de argumentos.
     #"0.0.0.0" es la dirección en la que va a estar corriendo, en este caso los 0 dicen que administre con localhost
-    #5000: es el puerto (el puerto por default es 80)
+    #5000: es el puerto
     #debug: hace que se esté monitoreando todo el tiempo la aplicación ante cualquier modificación de este archivo u otro del proyecto
 
 main()

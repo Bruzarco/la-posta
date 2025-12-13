@@ -1,10 +1,10 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>La Posta</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <title>Sign up</title>
 </head>
 
 <body>
@@ -22,7 +22,7 @@
                     {% elif cid == 3 %}
                         <a class="category" href="/sociedad">{{ x[1] }}</a>
                     {% elif cid == 4 %}
-                        <a class="category" href="/tecno">{{ x[1] }}</a>
+                        <a class="category" href="/tecnologia">{{ x[1] }}</a>
                     {% elif cid == 5 %}
                         <a class="category" href="/politica">{{ x[1] }}</a>
                     {% elif cid == 6 %}
@@ -39,24 +39,12 @@
                 </svg>
             </div>
             <div class="dropdownCont">
-                {% if categoria %}
-                    {% for x in categoria %}
-                        {% set cid = x[0] %}
-                        {% if cid == 1 %}
-                            <a class="dropdownCategory" href="/policiales">{{ x[1] }}</a>
-                        {% elif cid == 2 %}
-                            <a class="dropdownCategory" href="/economia">{{ x[1] }}</a>
-                        {% elif cid == 3 %}
-                            <a class="dropdownCategory" href="/sociedad">{{ x[1] }}</a>
-                        {% elif cid == 4 %}
-                            <a class="dropdownCategory" href="/tecno">{{ x[1] }}</a>
-                        {% elif cid == 5 %}
-                            <a class="dropdownCategory" href="/politica">{{ x[1] }}</a>
-                        {% elif cid == 6 %}
-                            <a class="dropdownCategory" href="/deportes">{{ x[1] }}</a>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+                <a class="dropdownCategory" href="/policiales">Policiales</a>
+                <a class="dropdownCategory" href="/economia">Economía</a>
+                <a class="dropdownCategory" href="/sociedad">Sociedad</a>
+                <a class="dropdownCategory" href="/tecnologia">Tecnología</a>
+                <a class="dropdownCategory" href="/politica">Política</a>
+                <a class="dropdownCategory" href="/deportes">Deportes</a>
             </div>
         </div>            
     </div>
@@ -67,35 +55,33 @@
                 <a href="/comentariosAdm">COMENTARIOS</a>
                 <a href="/logout">CERRAR SESIÓN</a>
             {% else %}
-                <a href="/noticia">¡CREA TU NOTICIA!</a>
-                <a href="/misentradas">MIS ENTRADAS</a>
+                <a href="/nuevanoticia">¡CREA TU NOTICIA!</a>
                 <a href="/logout">CERRAR SESIÓN</a>
             {% endif %}
         {% else %}
-            <a href="/noticia">¡CREA TU NOTICIA!</a>
             <a href="/login">INICIAR SESIÓN</a>
         {% endif %}
     </div>
 </header>
 
-    <form action="registrarse.html" method="post" class="container sessionCont">
+    <form action="/signup" method="post" class="container sessionCont" data-form="signup">
       <div class="container formCont">
         <h1>REGISTRATE</h1>
         <p>Completá los siguientes datos para crear tu cuenta</p>
-        <label for="email"><b>Nombre</b></label>
-        <input type="text" placeholder="Agregar nombre" name="nombre" id="nombre" required>
+                <label for="name"><b>Nombre</b></label>
+                <input type="text" placeholder="Agregar nombre" name="name" id="name" required>
 
-        <label for="email"><b>Apellido</b></label>
-        <input type="text" placeholder="Agregar apellido" name="apellido" id="apellido" required>
+                <label for="surname"><b>Apellido</b></label>
+                <input type="text" placeholder="Agregar apellido" name="surname" id="surname" required>
 
-        <label for="email"><b>Usuario</b></label>
-        <input type="text" placeholder="Agregar usuario" name="usuario" id="usuario" required>
+                <label for="userid"><b>Usuario</b></label>
+                <input type="text" placeholder="Agregar usuario" name="userid" id="userid" required>
     
-        <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Agregar email" name="email" id="email" required>
+                <label for="usermail"><b>Email</b></label>
+                <input type="text" placeholder="Agregar email" name="usermail" id="usermail" required>
     
-        <label for="psw"><b>Contraseña</b></label>
-        <input type="password" placeholder="Agregar contraseña" name="psw" id="psw" required>
+                <label for="userpassword"><b>Contraseña</b></label>
+                <input type="password" placeholder="Agregar contraseña" name="userpassword" id="userpassword" required>
     
         <label for="psw-repeat"><b>Repetir contraseña</b></label>
         <input type="password" placeholder="Repetir contraseña" name="psw-repeat" id="psw-repeat" required>
@@ -103,9 +89,8 @@
         <button type="submit" id="submit" class="registerbtn">Registrarse</button>
       </div>
     </form>
-    <div class="container2" style="background-color:#f1f1f1">
-      <span class="log">¿Ya tenés una cuenta? <a href="login.html">Inicia sesión</a></span>
-    </div>
-    <script src="ingreso03.js"></script>
+        <div class="container2" style="background-color:#f1f1f1">
+            <span class="log">¿Ya tenés una cuenta? <a href="/login">Inicia sesión</a></span>
+        </div>
 </body>
 </html>

@@ -3,14 +3,11 @@
 
 from __mysql__db import * #importo las funciones que interaccionan con la base de datos
 from controller import * #importo las funciones que cree en controller
-from flask import render_template # https://flask.palletsprojects.com/en/2.3.x/tutorial/templates/
+from flask import render_template
 #para renderizar las plantillas con jinja y crear paginas dinamicas
 from flask import Flask,redirect, request, session  
-# redirect: redirigir a otras rutas 
-# request: gestiona las solicitudes http recibidas 
-# session: para el manejo de sesion
-from appConfig import config  # Archivo de configuracion de la aplicación
-import os  # Gestiona acceso al sistema operativo local
+from appConfig import config
+import os
 
 error = ""
 
@@ -60,11 +57,16 @@ def Route(aplicacion=Flask):
     
     @aplicacion.route("/comentariosAdm")
     def comentarios_admin():
-        ''' Página de administración de comentarios '''
-        if not haySesion() or not esAdministrador():
-            return redirect('/login')
-        # Aquí puedes agregar la lógica para mostrar los comentarios
-        return render_template("comentariosAdm.html")
+        return paginaAdminComentarios()
+
+
+    @aplicacion.route("/cambiar_estado_comentario", methods=["POST"])
+    def cambiar_estado_comentario():
+        return procesarCambioEstadoComentario(request)
+    
+    @aplicacion.route("/borrar_noticia", methods=["POST"])
+    def borrar_noticia_route():
+        return borrarNoticia(request)
     
 
 
@@ -89,12 +91,13 @@ def Route(aplicacion=Flask):
             es_admin=es_admin,
             usuario_logueado=usuario_logueado
         )
-    
-
-
-    @aplicacion.route("/signup",methods=["GET"])
+    @aplicacion.route("/signup", methods=["GET", "POST"])
     def signup():
-        # Preparar datos comunes para el header
+        if request.method == "POST":
+            param = {}
+            return subirRegistroAlSistema(param, request)
+
+        # Preparar datos comunes para el header (GET)
         param = {}
         obtenerCategorias(param)
         categorias = param.get('categorias', [])
@@ -102,20 +105,11 @@ def Route(aplicacion=Flask):
         usuario_logueado = haySesion()
 
         return render_template(
-            'registrarse.html',
+            'signup.html',
             categoria=categorias,
             es_admin=es_admin,
             usuario_logueado=usuario_logueado
         )
-    
-
-    
-    @aplicacion.route("/CargarDatosUsuario",methods=["POST"])
-    def registrar_cuenta():
-        param={}
-        return subirRegistroAlSistema(param,request)
-    
-
   
     @aplicacion.route("/noticia", methods=["GET","POST"])
     def noticia_route():
@@ -123,17 +117,12 @@ def Route(aplicacion=Flask):
         # Usar la función de controller que arma noticia + otras_noticias + header y comentarios
         return noticia(param)
 
-
-
-    @aplicacion.route("/nueva_noticia",methods=["POST"])
+    @aplicacion.route("/nueva_noticia", methods=["GET", "POST"])
     def nueva_noticia():
-        param={}
-        return subirNoticiaAlSistema(param,request)
-    
+        if request.method == "POST":
+            param = {}
+            return subirNoticiaAlSistema(param, request)
 
-
-    @aplicacion.route("/nuevonoticia")
-    def nuevanoticia():
         return mostrarFormularioNuevaNoticia()
     
 
@@ -146,45 +135,34 @@ def Route(aplicacion=Flask):
     @aplicacion.route("/economia")
     def economia():
         param = {}
-        return obtenerNoticiasPorCategoriaSlug("economia", param)
+        return obtenerNoticiasPorCategoria("Economía", param)
     
     
     @aplicacion.route("/deportes")
     def deportes():
         param = {}
-        return obtenerNoticiasPorCategoriaSlug("deportes", param)
+        return obtenerNoticiasPorCategoria("Deportes", param)
     
     
     @aplicacion.route("/policiales")
     def policiales():
         param = {}
-        return obtenerNoticiasPorCategoriaSlug("policiales", param)
+        return obtenerNoticiasPorCategoria("Policiales", param)
     
     
     @aplicacion.route("/politica")
     def politica():
         param = {}
-        return obtenerNoticiasPorCategoriaSlug("politica", param)
+        return obtenerNoticiasPorCategoria("Política", param)
     
     
     @aplicacion.route("/sociedad")
     def sociedad():
         param = {}
-        return obtenerNoticiasPorCategoriaSlug("sociedad", param)
+        return obtenerNoticiasPorCategoria("Sociedad", param)
     
     
-    @aplicacion.route("/tecno")
-    def tecno():
+    @aplicacion.route("/tecnologia")
+    def tecnologia():
         param = {}
-        return obtenerNoticiasPorCategoriaSlug("tecno", param)
-    
-    
-    # Ruta antigua /categoria?id=... ya no es necesaria; se usan slugs /deportes, /economia, etc.
-    
-    
-    """
-    @aplicacion.route("/noticias")
-    def noticia_individual():
-        param = {}
-        return obtenerNoticiaIndividual(request, param)
-    """
+        return obtenerNoticiasPorCategoria("Tecnología", param)

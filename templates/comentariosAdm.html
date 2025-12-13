@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles.css">
+    <title>Administracion de Comentarios</title>
+</head>
+<body>
+    <header class="topnav" id="myTopnav">
+        <div class="headerNewsCont">
+            <a href="/" class="active category">INICIO</a>
+            <div class="webHeader">
+                <a class="category" href="/deportes">Deportes</a>
+                <a class="category" href="/economia">Economía</a>
+                <a class="category" href="/politica">Política</a>
+                <a class="category" href="/sociedad">Sociedad</a>
+                <a class="category" href="/policiales">Policiales</a>
+                <a class="category" href="/tecnologia">Tecnología</a>
+            </div>
+            <div class="dropdownHeader">
+                <div class="dropdownTitle">
+                    <p class="category">Categorías</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"/>
+                    </svg>
+                </div>
+                <div class="dropdownCont">
+                    <a class="dropdownCategory" href="/deportes">Deportes</a>
+                    <a class="dropdownCategory" href="/economia">Economía</a>
+                    <a class="dropdownCategory" href="/politica">Política</a>
+                    <a class="dropdownCategory" href="/sociedad">Sociedad</a>
+                    <a class="dropdownCategory" href="/policiales">Policiales</a>
+                    <a class="dropdownCategory" href="/tecnologia">Tecnología</a>
+                </div>
+            </div>
+        </div>
+        <div class="headerUserCont">
+            {% if usuario_logueado %}
+                {% if es_admin %}
+                    <a href="/noticiasAdm">NOTICIAS</a>
+                    <a href="/comentariosAdm">COMENTARIOS</a>
+                    <a href="/logout">CERRAR SESIÓN</a>
+                {% else %}
+                    <a href="/nueva_noticia">¡CREA TU NOTICIA!</a>
+                    <a href="/logout">CERRAR SESIÓN</a>
+                {% endif %}
+            {% else %}
+                <a href="/signup">REGISTRARSE</a>
+                <a href="/login">INICIAR SESIÓN</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <section class="comAdm-container">
+            <h2>ADMINISTRADOR DE COMENTARIOS</h2>
+            <div id="comAdm">
+                {% if comentarios %}
+                    {% set current_noticia = None %}
+                    {% for c in comentarios %}
+                        {% set comentario_id = c[0] %}
+                        {% set noticia_id = c[1] %}
+                        {% set noticia_titulo = c[2] %}
+                        {% set contenido = c[3] %}
+                        {% set fecha = c[4] %}
+                        {% set usuario = c[5] %}
+                        {% set estado = c[6] %}
+
+                        {% if current_noticia != noticia_id %}
+                            {% if not loop.first %}
+                                <hr>
+                            {% endif %}
+                            <h3>
+                                <a href="/noticia?id={{ noticia_id }}" class="com-noticia-link">
+                                    Noticia {{ noticia_id }} - {{ noticia_titulo }}
+                                </a>
+                            </h3>
+                            {% set current_noticia = noticia_id %}
+                        {% endif %}
+
+                        <div class="comBox">
+                            <p><strong>ID Comentario:</strong> {{ comentario_id }}</p>
+                            <p><strong>Usuario:</strong> {{ usuario }}</p>
+                            <p><strong>Fecha:</strong> {{ fecha }}</p>
+                            <p><strong>Contenido:</strong> {{ contenido }}</p>
+                            <div class="comStatBox">
+                                <form action="/cambiar_estado_comentario" method="POST">
+                                    <input type="hidden" name="comentario_id" value="{{ comentario_id }}">
+                                    <label for="comStat{{ comentario_id }}">ESTADO</label>
+                                    <select id="comStat{{ comentario_id }}" name="nuevo_estado" onchange="this.form.submit()">
+                                        <option value="publicado" {% if estado == 1 %}selected{% endif %}>PUBLICADO</option>
+                                        <option value="no-publicado" {% if estado == 2 %}selected{% endif %}>NO PUBLICADO</option>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No hay comentarios para mostrar todavía.</p>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

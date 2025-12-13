@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../static/styles.css" media="all">
-    <title>{% if categoria_actual %}{{ categoria_actual[1] }}{% else %}Categoría{% endif %}</title>
+    <title>Categoria</title>
 </head>
 <body>
     <header class="topnav" id="myTopnav">
@@ -20,7 +20,7 @@
                     {% elif cid == 3 %}
                         <a class="category" href="/sociedad">{{ x[1] }}</a>
                     {% elif cid == 4 %}
-                        <a class="category" href="/tecno">{{ x[1] }}</a>
+                        <a class="category" href="/tecnologia">{{ x[1] }}</a>
                     {% elif cid == 5 %}
                         <a class="category" href="/politica">{{ x[1] }}</a>
                     {% elif cid == 6 %}
@@ -41,7 +41,7 @@
                     <a class="dropdownCategory" href="/politica">Política</a>
                     <a class="dropdownCategory" href="/sociedad">Sociedad</a>
                     <a class="dropdownCategory" href="/policiales">Policiales</a>
-                    <a class="dropdownCategory" href="/tecno">Tecnología</a>
+                    <a class="dropdownCategory" href="/tecnologia">Tecnología</a>
                 </div>
             </div>            
         </div>
@@ -56,6 +56,7 @@
                     <a href="/logout">CERRAR SESIÓN</a>
                 {% endif %}
             {% else %}
+                <a href="/signup">REGISTRARSE</a>
                 <a href="/login">INICIAR SESIÓN</a>
             {% endif %}
         </div>
@@ -65,14 +66,14 @@
         <div class="noticias">
             {% if noticias and noticias|length > 0 %}
                 {% for x in noticias %}
-                <div class="noticia">
-                    <h2>{{ x[4] }}</h2>
-                    <a href="/noticia?id={{ x[0] }}">
+                <a class="noticia-link" href="/noticia?id={{ x[0] }}">
+                    <div class="noticia">
+                        <h2>{{ x[4] }}</h2>
                         {% if x[7] %}
                             <img src="{{ url_for('static', filename=x[7]) }}" alt="Imagen de la noticia">
                         {% endif %}
-                    </a>
-                </div>
+                    </div>
+                </a>
                 {% endfor %}
             {% else %}
                 <p>Ahora mismo no hay noticias disponibles.</p>

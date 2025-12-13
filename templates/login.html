@@ -1,10 +1,10 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/styles.css">
-    <title>La Posta</title>
+    <title>Login</title>
 </head>
 
 <body>
@@ -22,7 +22,7 @@
                         {% elif cid == 3 %}
                             <a class="category" href="/sociedad">{{ x[1] }}</a>
                         {% elif cid == 4 %}
-                            <a class="category" href="/tecno">{{ x[1] }}</a>
+                            <a class="category" href="/tecnologia">{{ x[1] }}</a>
                         {% elif cid == 5 %}
                             <a class="category" href="/politica">{{ x[1] }}</a>
                         {% elif cid == 6 %}
@@ -39,24 +39,12 @@
                     </svg>
                 </div>
                 <div class="dropdownCont">
-                    {% if categoria %}
-                        {% for x in categoria %}
-                            {% set cid = x[0] %}
-                            {% if cid == 1 %}
-                                <a class="dropdownCategory" href="/policiales">{{ x[1] }}</a>
-                            {% elif cid == 2 %}
-                                <a class="dropdownCategory" href="/economia">{{ x[1] }}</a>
-                            {% elif cid == 3 %}
-                                <a class="dropdownCategory" href="/sociedad">{{ x[1] }}</a>
-                            {% elif cid == 4 %}
-                                <a class="dropdownCategory" href="/tecno">{{ x[1] }}</a>
-                            {% elif cid == 5 %}
-                                <a class="dropdownCategory" href="/politica">{{ x[1] }}</a>
-                            {% elif cid == 6 %}
-                                <a class="dropdownCategory" href="/deportes">{{ x[1] }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
+                    <a class="dropdownCategory" href="/policiales">Policiales</a>
+                    <a class="dropdownCategory" href="/economia">Economía</a>
+                    <a class="dropdownCategory" href="/sociedad">Sociedad</a>
+                    <a class="dropdownCategory" href="/tecnologia">Tecnología</a>
+                    <a class="dropdownCategory" href="/politica">Política</a>
+                    <a class="dropdownCategory" href="/deportes">Deportes</a>
                 </div>
             </div>            
         </div>
@@ -72,11 +60,12 @@
                 {% endif %}
             {% else %}
                 <a href="/login">INICIAR SESIÓN</a>
+                <a href="/signup">REGISTRARSE</a>
             {% endif %}
         </div>
     </header>
 
-    <form action="/GuardarDatosPerfil" method="post" class="container sessionCont">
+    <form action="/GuardarDatosPerfil" method="post" class="container sessionCont" data-form="login">
         <div class="container formCont">
             <h1>INICIAR SESIÓN</h1>
             <p>Completá los datos de tu cuenta</p>
@@ -99,6 +88,6 @@
                 onclick="window.location.href='/signup'">REGISTRARSE</button>
         </div>
     </div>
-    <script src="../static/ingreso02.js"></script>
+    <script src="../static/scripts.js"></script>
 </body>
 </html>
